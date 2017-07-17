@@ -2,6 +2,7 @@ import socket
 import thread
 import sys
 import os
+import time
 import uuid
 from math import radians, cos, sin, asin, sqrt
 
@@ -30,10 +31,11 @@ def calculateDistance(fileName):
         actualFile.write('(')
 	line = line.replace("(", "")
 	line = line.replace(")", "")
+	line = line.replace(" ", "")
 	line = line.replace("\n", "")
 	line = line.replace("\r", "")
 	
-	coordinates = line.split(", ")
+	coordinates = line.split(",")
 	for coordinate in coordinates:
             actualFile.write(str(coordinate) + ', ')
 	
@@ -74,12 +76,14 @@ def connect(connection):
                 reading = finalFile.read(4096)
                 connection.send(reading)
                 while reading != "":
-                    reading = coordinatesFile.read(4096)
+                    reading = finalFile.read(4096)
                     connection.send(reading)
-
+                
                 # waiting for finishing the file send
-                time.sleep(0.1)
+                time.sleep(1)
                 connection.send("-END-")
+                
+                print("finished sending")
                 finalFile.close()
 
                 response = connection.recv(1024)

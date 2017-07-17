@@ -32,7 +32,7 @@ def sendFile(host, port, coordinatesFileName):
                 print("Succesfully uploaded file.")
 
                 coordinatesFileNameResponse = coordinatesFileName + 'Response'
-                finalFile = open(coordinatesFileNameResponse, 'wb+')
+                finalFile = open(coordinatesFileNameResponse, 'wb')
                 actualSocket.send("READY")
                 print("Receiving file...")
 
@@ -43,7 +43,7 @@ def sendFile(host, port, coordinatesFileName):
                         break
                     finalFile.write(response)
 
-                connection.send("FINISHED")
+                actualSocket.send("FINISHED")
                 print("File succesfully received as " + coordinatesFileNameResponse)
 		
 		sys.exit()
